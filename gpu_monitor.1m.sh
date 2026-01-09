@@ -11,9 +11,9 @@ SSH_CMD="/usr/bin/ssh -i $ID_FILE -o StrictHostKeyChecking=no -o ConnectTimeout=
 RAW_DATA=$($SSH_CMD $HOST "nvidia-smi --query-gpu=index,name,utilization.gpu,memory.free,memory.total --format=csv,noheader,nounits" 2>&1)
 
 ## Slurm集群
-# 获取集群中所有 GPU 类型节点的空闲/总计情况
+# 方案A：获取集群中所有 GPU 类型节点的空闲/总计情况
 # RAW_DATA=$($SSH_CMD $HOST "sinfo -O 'NodeList:20,Gres:20,GresUsed:20,StateLong' --noheader | grep -i gpu")
-# 通过 srun 在指定节点上远程执行 nvidia-smi
+# 方案B：通过 srun 在指定节点上远程执行 nvidia-smi
 # RAW_DATA=$($SSH_CMD $HOST "srun -w node01 nvidia-smi --query-gpu=index,name,utilization.gpu,memory.free,memory.total --format=csv,noheader,nounits")
 
 
