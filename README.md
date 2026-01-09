@@ -92,7 +92,7 @@ A: Change the middle part of the script filename. For example, changing .1m. to 
 ## 📄 License
 MIT License © 2026 zeyu  
 
-[Chinese Version]
+# RemoteGPU-Bar 🟢[Chinese Version]
 
 > 一个极其轻量、无需服务器端部署的 macOS 菜单栏小组件，用于通过 SSH 监控远程服务器的 NVIDIA GPU 状态。
 
