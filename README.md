@@ -89,6 +89,9 @@ A: Ensure you are using the latest version of the script. The script must includ
 Q: How do I change the refresh frequency? 
 A: Change the middle part of the script filename. For example, changing .1m. to .30s. sets the refresh to every 30 seconds. It is recommended not to go below 10s to avoid unnecessary SSH connection pressure on the server.
 
+Q：How to use with Slurm clusters?
+A：Since Slurm head nodes usually don't have GPUs, you should modify the nvidia-smi command in the script to use Slurm's native commands. For example, use squeue -u $USER to monitor your own job's GPU usage, or sinfo to monitor cluster-wide GPU availability.
+
 ---
 
 ## 📄 License
