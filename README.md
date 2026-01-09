@@ -95,7 +95,7 @@ MIT License © 2026 zeyu
 
 
 # RemoteGPU-Bar 🟢[中文说明]
-
+![icon](icon.png)
 > 一个极其轻量、无需服务器端部署的 macOS 菜单栏小组件，用于通过 SSH 监控远程服务器的 NVIDIA GPU 状态。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
