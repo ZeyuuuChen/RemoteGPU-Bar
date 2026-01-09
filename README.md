@@ -70,6 +70,7 @@ HOST="user@your_server_ip"
 # 通常是 ~/.ssh/id_rsa 或 ~/.ssh/id_ed25519
 ID_FILE="/Users/你的用户名/.ssh/id_rsa"
 # ===========================================
+```
 保存文件。SwiftBar 通常会自动检测到更改并刷新，你也可以手动点击菜单栏 -> Refresh All。
 
 ❓ 常见问题 (FAQ)
