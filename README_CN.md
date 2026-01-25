@@ -1,96 +1,133 @@
-# RemoteGPU-Bar 🟢[中文说明]
-![icon](icon.png)
+# RemoteGPU-Bar（中文说明）
+
 > 一个极其轻量、无需服务器端部署的 macOS 菜单栏小组件，用于通过 SSH 监控远程服务器的 NVIDIA GPU 状态。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
-![Requires](https://img.shields.io/badge/requires-SwiftBar-orange)
-
-![中文说明](README_CN.md) ![English](README.md)
-
-**RemoteGPU-Bar** 是一个基于 Shell 脚本的 [SwiftBar](https://github.com/swiftbar/SwiftBar) 插件。它通过 SSH 连接到你的 Linux 服务器，运行 `nvidia-smi` 命令，并将结果解析为美观、直观的 macOS 菜单栏信息。
-
-**特点：**
-* 🚀 **零依赖**：服务器端无需安装 Python、Node.js 或任何 Web 服务。只要有 SSH 和 `nvidia-smi` 即可。
-* 👀 **一目了然**：菜单栏常驻显示空闲 GPU 数量（例如 `GPU: 2/4 Free`）。
-* 📊 **详细数据**：点击下拉展示每张卡的名称、显存占用和利用率。
-* 🎨 **智能着色**：空闲显卡显示绿色 🟢，忙碌显卡显示红色 🔴。
-* 🔤 **完美对齐**：使用等宽字体 (Menlo)，数字显示整齐治愈。
-* 🖥️ **快捷终端**：一键打开 SSH 终端连接到服务器。
+RemoteGPU-Bar 是一个基于 Shell 的 **SwiftBar 插件**：通过 SSH 连接到 Linux 服务器，执行 `nvidia-smi`，并把结果显示在 macOS 菜单栏与下拉菜单中。
 
 ---
 
-## 📸 预览截图
+## ✨ 特点
 
-![Screenshot](screenshot.png)
-
+* **零依赖（服务器端）**：只需要 SSH + `nvidia-smi`
+* **一目了然**：菜单栏常驻显示空闲 GPU 数量（例如 `GPU: 2/4 Free`）
+* **详细信息**：下拉展示每张卡的名称、显存占用、利用率
+* **智能着色**：空闲 🟢 / 忙碌 🔴
+* **等宽对齐**：Menlo 字体整齐美观
+* **快捷终端**：一键打开 SSH 终端
+* **多服务器支持**：配置多台服务器，下拉菜单切换（选择会本地持久化）
 
 ---
 
-## 🛠 前置要求
+## ✅ 前置要求
 
-在使用此插件之前，请确保你满足以下条件：
+1. macOS
+2. 已安装 SwiftBar
+3. 已配置 **SSH 免密登录**
+4. 远程服务器已安装 NVIDIA 驱动且可用 `nvidia-smi`
 
-1.  **macOS**: 你的电脑是 Mac。
-2.  **SwiftBar**: 已安装 [SwiftBar](https://github.com/swiftbar/SwiftBar/releases) (一个免费开源的菜单栏管理工具)。
-3.  **SSH 免密登录**: 你的 Mac 必须配置了 SSH 密钥对，并能**免密码**登录到目标服务器。
-    * *测试方法：在终端输入 `ssh user@your_server_ip`，如果不需要输入密码直接登录成功，即满足要求。*
+测试：
+
+```bash
+ssh user@your_server_ip
+```
 
 ---
 
 ## 📥 安装步骤
 
-1.  **下载脚本**：
-    将本仓库中的 `gpu_monitor.1m.sh` 文件下载到你的本地电脑。
-    *(注意文件名中的 `.1m.` 代表每 1 分钟刷新一次，你可以按需修改)*
-
-2.  **放入插件目录**：
-    打开 SwiftBar，点击菜单栏图标 -> `Open Plugin Folder...`，将下载的 `.sh` 文件拖入该目录。
-
-3.  **赋予执行权限**：
-    打开终端，运行以下命令（替换为你实际的插件目录路径）：
-    ```bash
-    chmod +x ~/Documents/SwiftBar/gpu_monitor.1m.sh
-    ```
-
----
-
-## ⚙️ 配置方法 (重要!)
-
-你需要修改脚本文件以匹配你的服务器信息。
-
-使用文本编辑器（推荐 VSCode, Sublime Text 或终端 nano，**不要用自带的文本编辑**）打开 `gpu_monitor.1m.sh`。
-
-修改脚本顶部的配置区域：
+1. 下载 `gpu_monitor.1m.sh`
+2. SwiftBar → 菜单栏图标 → **Open Plugin Folder...**
+3. 把脚本放入插件目录
+4. 赋予执行权限：
 
 ```bash
-# ================= 配置区域 =================
-# 1. 修改为你的服务器 SSH 用户名和 IP 地址
-HOST="user@your_server_ip"
-
-# 2. 修改为你 Mac 本地的 SSH 私钥绝对路径
-# 通常是 ~/.ssh/id_rsa 或 ~/.ssh/id_ed25519
-ID_FILE="/Users/你的用户名/.ssh/id_rsa"
-# ===========================================
+chmod +x ~/Documents/SwiftBar/gpu_monitor.1m.sh
 ```
-保存文件。SwiftBar 通常会自动检测到更改并刷新，你也可以手动点击菜单栏 -> Refresh All。
+
+> 文件名中的 `.1m.` 表示 1 分钟刷新一次，可通过重命名修改刷新频率（例如 `.30s.`、`.5m.`）。
 
 ---
 
-## ❓ 常见问题 (FAQ)
-Q: 菜单栏显示 "GPU: Offline 🔴"？ 
-A: 这意味着 SSH 连接失败。请检查：
-你的网络能否连接到服务器。
-脚本中 HOST 和 ID_FILE 路径是否正确。
-点击菜单，查看红色的报错信息详情。如果是 "Host verification failed"，请先在终端手动连接一次服务器并输入 yes 接受主机指纹。
+## ⚙️ 配置方法（多服务器 / 单服务器）
 
-Q: 为什么菜单里的字是灰色的？ 
-A: 请确保你使用的是最新版的脚本。脚本中必须包含 refresh=true 或 shell=... 等交互属性，macOS 才会将其渲染为正常的高亮颜色。
+使用 VSCode / Sublime / 终端 `nano` 打开 `gpu_monitor.1m.sh`（不要用系统自带文本编辑器）。
 
-Q: 如何修改刷新频率？ 
-A: 修改脚本文件名的中间部分。例如，将 .1m. 改为 .30s. 就是 30 秒刷新一次。建议不要低于 10s，以免给服务器造成不必要的 SSH 连接压力。
+### 1）配置服务器列表
+
+在脚本顶部配置 `SERVERS`。
+
+**格式**
+
+* `"显示名|user@host|私钥绝对路径"`
+
+**示例（多服务器）**
+
+```bash
+SERVERS=(
+  "Lab-A|user@10.0.0.10|/Users/你的用户名/.ssh/id_ed25519"
+  "Lab-B|user@10.0.0.11|/Users/你的用户名/.ssh/id_ed25519"
+)
+```
+
+**示例（单服务器）**
+
+```bash
+SERVERS=(
+  "Main|user@your_server_ip|/Users/你的用户名/.ssh/id_ed25519"
+)
+```
+
+### 2）在 SwiftBar 下拉菜单切换服务器
+
+保存脚本后，点击菜单栏图标：
+
+* 找到 **Server** 区域
+* 点击目标服务器即可切换
+* 选择会**本地持久化**，刷新/重启后仍保持上次选择
+
+### 3）为什么每次刷新只查询一台服务器？
+
+为了避免每分钟对 N 台服务器建立 N 次 SSH 连接，脚本每次刷新只查询**当前所选服务器**。如需看其他服务器，直接在菜单中切换即可。
 
 ---
 
-## 📄 License
+## ❓ 常见问题（FAQ）
+
+### Q：菜单栏显示 `GPU: Offline`？
+
+SSH 失败。请检查：
+
+* 网络是否可达
+* `SERVERS` 中的 `user@host` 与私钥路径是否正确
+* 是否需要先手动 SSH 一次接受主机指纹：
+
+```bash
+ssh user@your_server_ip
+# 若提示则输入 yes
+```
+
+### Q：为什么菜单里有些字是灰色的？
+
+SwiftBar 会把不可交互的菜单项渲染成灰色。脚本通过 `refresh=true` / `shell=...` 等交互属性来避免灰字。若仍出现灰字，请确认你使用的是最新脚本且没有删除这些交互属性。
+
+### Q：如何修改刷新频率？
+
+通过重命名脚本：
+
+* `gpu_monitor.1m.sh` → `gpu_monitor.30s.sh`（30 秒刷新）
+* `gpu_monitor.1m.sh` → `gpu_monitor.5m.sh`（5 分钟刷新）
+
+建议不要低于 10 秒，以免造成过多 SSH 连接压力。
+
+### Q：如何适配 Slurm 集群？
+
+Slurm 登录节点通常没有 GPU。可以把脚本里的 `nvidia-smi` 替换为 Slurm 命令，例如：
+
+* `squeue -u $USER`（查看自己的任务）
+* `sinfo`（查看集群分区/资源概况）
+
+---
+
+## 📝 License
+
 MIT License © 2026 zeyu
